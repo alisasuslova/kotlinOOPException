@@ -78,4 +78,40 @@ class WallServiceTest {
         assertFalse(result)
     }
 
+    @Test
+    fun createCommentTrue() {
+
+        val result = WallService.createComment(
+            Post(
+                postId = 1,
+                page = 1,
+                listOnTheLeft = "Документация",
+                fieldId = 0,
+                fieldName = "Id",
+                fieldTypeDescription = "NEW",
+                likes = Likes(10),
+                comments = Comments(1,1,100124,"Первый комментарий")
+            )
+        //assertEquals(false, result)
+        assertTrue(result)
+    }
+
+    @Test
+    fun createCommentFalse() {
+
+        val result = WallService.createComment(
+            Post(
+                postId = 100,
+                page = 1,
+                listOnTheLeft = "Документация",
+                fieldId = 0,
+                fieldName = "Id",
+                fieldTypeDescription = "NEW",
+                likes = Likes(10),
+                comments = Comments(1,1,100124,"Первый комментарий")
+        )
+        //assertEquals(false, result)
+        assertFalse(result)
+    }
+
 }
