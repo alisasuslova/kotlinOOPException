@@ -236,13 +236,10 @@ fun main() {
         )
     )
 
-
-    println(WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий")))
-    println(WallService.createComment(4, Comments(0, 2541, 170124, "Второй комментарий")))
+    print(WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий")))
+    WallService.createComment(4, Comments(0, 2541, 170124, "Второй комментарий"))
 
     WallService.printPosts()
-
-
 }
 
 
