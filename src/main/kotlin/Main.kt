@@ -66,22 +66,7 @@ object WallService {
     }
 
     fun createComment(postId: Int, comment: Comments): Comments {
-
-        /*for (post in posts) {
-            if (post.postId == postId && comments.isEmpty()) {
-                comments.plusElement(comment.copy(id = lastCommentsId))
-                ++lastCommentsId
-                val post = post.copy(comments = comments)
-                return comment
-            } else if(post.postId == postId && comments.isNotEmpty()){
-                comments += comment.copy(id = lastCommentsId + 1)
-                ++lastCommentsId
-                val post = post.copy(comments = comments)
-                return comment
-            }
-        }
-        return throw PostNotFoundException("Поста с id $postId нет!")*/
-
+        
         for ((index, post) in posts.withIndex()) {
             if (post.postId == postId && comments.isEmpty()) {
                 comments += comment
