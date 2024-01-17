@@ -85,7 +85,7 @@ object WallService {
         for ((index, post) in posts.withIndex()) {
             if (post.postId == postId && comments.isEmpty()) {
                 comments += comment
-                posts[index] = post.copy(comments = post.comments)
+                posts[index] = post.copy(comments = post.comments + comments.last())
                 ++lastCommentsId
                 return comment
             } else {
