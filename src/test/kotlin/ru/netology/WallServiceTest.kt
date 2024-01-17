@@ -26,7 +26,6 @@ class WallServiceTest {
                 likes = Likes(10)
             )
         )
-
         assertEquals(1, result.postId)
     }
 
@@ -55,8 +54,6 @@ class WallServiceTest {
                 fieldTypeDescription = "Текст записи."
             )
         )
-
-        //assertEquals(true, result)
         assertTrue(result)
     }
 
@@ -74,19 +71,29 @@ class WallServiceTest {
                 likes = Likes(10)
             )
         )
-        //assertEquals(false, result)
         assertFalse(result)
     }
 
-    /*@Test
+    @Test
     fun createCommentTrue() {
 
+        var posts = emptyArray<Post>()
+        posts += Post(
+            postId = 0,
+            page = 1,
+            listOnTheLeft = "Документация",
+            fieldId = 0,
+            fieldName = "Id",
+            fieldTypeDescription = "Идентификатор записи.",
+            likes = Likes(10)
+        )
 
-        var result = WallService.createComment(0, Comments(0, 1051, 160124, "Первый комментарий"))
+        val testComment = Comments(1, 1051, 160124, "Первый комментарий")
 
-        assertEquals(Comments(id= 1, from_id= 1051, date= 160124, test= "Первый комментарий"), result)
-        //assertTrue(result)
-    }*/
+        var result = WallService.createComment(0, testComment)
+
+        assertEquals(testComment, result)
+    }
 
 
     @Test(expected = PostNotFoundException::class)
