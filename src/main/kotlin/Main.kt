@@ -85,6 +85,7 @@ object WallService {
         for ((index, post) in posts.withIndex()) {
             if (post.postId == postId && comments.isEmpty()) {
                 comments += comment
+                comment.id = lastCommentsId
                 posts[index] = post.copy(comments = post.comments + comments.last())
                 ++lastCommentsId
                 return comment
@@ -92,17 +93,16 @@ object WallService {
                 for ((index, post) in posts.withIndex()) {
                     if (post.postId == postId && comments.isNotEmpty()) {
                         comments += comment
+                        comment.id = lastCommentsId
                         posts[index] = post.copy(comments = post.comments + comments.last())
                         ++lastCommentsId
                         return comment
                     }
                 }
             }
-
         }
         throw PostNotFoundException("Поста с id $postId нет!")
     }
-
 }
 
 
