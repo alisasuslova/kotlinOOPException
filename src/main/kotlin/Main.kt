@@ -33,7 +33,7 @@ object WallService {
     private var lastPostId = 0
 
     private var comments = emptyArray<Comments>() //массив для хранения комментариев к посту
-    private var lastCommentsId = 0
+    private var lastCommentsId = 1
 
 
     fun add(post: Post): Post {
@@ -67,7 +67,7 @@ object WallService {
 
     fun createComment(postId: Int, comment: Comments): Comments {
 
-        for (post in posts) {
+        /*for (post in posts) {
             if (post.postId == postId && comments.isEmpty()) {
                 comments.plusElement(comment.copy(id = lastCommentsId))
                 ++lastCommentsId
@@ -80,7 +80,27 @@ object WallService {
                 return comment
             }
         }
-        return throw PostNotFoundException("Поста с id $postId нет!")
+        return throw PostNotFoundException("Поста с id $postId нет!")*/
+
+        for ((index, post) in posts.withIndex()) {
+            if (post.postId == postId && comments.isEmpty()) {
+                comments += comment
+                posts[index] = post.copy(comments = post.comments)
+                ++lastCommentsId
+                return comment
+            } else {
+                for ((index, post) in posts.withIndex()) {
+                    if (post.postId == postId && comments.isNotEmpty()) {
+                        comments += comment
+                        posts[index] = post.copy(comments = post.comments + comments.last())
+                        ++lastCommentsId
+                        return comment
+                    }
+                }
+            }
+
+        }
+        throw PostNotFoundException("Поста с id $postId нет!")
     }
 
 }
@@ -221,7 +241,6 @@ fun main() {
     println(WallService.createComment(4, Comments(0, 2541, 170124, "Второй комментарий")))
 
     WallService.printPosts()
-
 
 
 }
