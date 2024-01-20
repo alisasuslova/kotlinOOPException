@@ -2,6 +2,15 @@ package ru.netology
 
 data class Likes(val likes: Int = 0)
 
+data class Comments(
+    var id: Int = 0,
+    var from_id: Int = 0,
+    var date: Int = 0,
+    var test: String = ""
+)
+
+class PostNotFoundException(message: String) : RuntimeException(message)
+
 data class Post(
     var postId: Int,
     var dateOfPublished: String = "07/21/2020",
@@ -15,12 +24,17 @@ data class Post(
     var fieldTypeDescription: String,
     var fieldType: String = "",
     var likes: Likes = Likes(),
-    var attachment: Array<Attachment>? = emptyArray()
+    var attachment: Array<Attachment>? = emptyArray(),
+    var comments: Array<Comments> = emptyArray()
 )
 
 object WallService {
     private var posts = emptyArray<Post>() // массив для хранения постов
     private var lastPostId = 0
+
+    private var comments = emptyArray<Comments>() //массив для хранения комментариев к посту
+    private var lastCommentsId = 1
+
 
     fun add(post: Post): Post {
         posts += post.copy(++lastPostId, likes = post.likes.copy()) //добавляет пост в массив
@@ -40,9 +54,10 @@ object WallService {
     fun printPosts() {
         for (post in posts) {
             print(post)
-            print(" ")
+            println(" ")
+            println()
         }
-        println()
+
     }
 
     fun clear() {
@@ -50,59 +65,75 @@ object WallService {
         lastPostId = 0
     }
 
+    fun createComment(postId: Int, comment: Comments): Comments {
+
+        for ((index, post) in posts.withIndex()) {
+            if (post.postId == postId) {
+                comments += comment.copy(id = lastCommentsId++)
+                posts[index] = post.copy(comments = post.comments + comments.last())
+                return comments.last()
+            }
+        }
+        throw PostNotFoundException("Поста с id $postId нет!")
+    }
 }
 
+
 interface Attachment {
-    val type : String
+    val type: String
 }
 
 data class Photo(
     var id: Int,
-    var owner_id : Int,
-    var photo_130 : String,
-    var photo_604 : String
+    var owner_id: Int,
+    var photo_130: String,
+    var photo_604: String
 )
 
 data class Video(
     var id: Int,
-    var owner_id : Int,
-    var title : String,
-    var duration : Int
+    var owner_id: Int,
+    var title: String,
+    var duration: Int
 )
 
 data class Audio(
     var id: Int,
-    var owner_id : Int,
-    var artist : String,
-    var title : String
+    var owner_id: Int,
+    var artist: String,
+    var title: String
 )
 
 data class File(
     var id: Int,
-    var owner_id : Int,
-    var title : String,
-    var size : Int
+    var owner_id: Int,
+    var title: String,
+    var size: Int
 )
 
 data class Gift(
     var id: Int,
-    var thumb_256 : String,
-    var thumb_96 : String,
-    var thumb_48 : String
+    var thumb_256: String,
+    var thumb_96: String,
+    var thumb_48: String
 )
 
-class PhotoAttachment(val photo : Photo) : Attachment {
+class PhotoAttachment(val photo: Photo) : Attachment {
     override val type = "Photo"
 }
+
 class VideoAttachment(val video: Video) : Attachment {
     override val type = "Video"
 }
+
 class AudioAttachment(val audio: Audio) : Attachment {
     override val type = "Audio"
 }
+
 class FileAttachment(val file: File) : Attachment {
     override val type = "File"
 }
+
 class GiftAttachment(val gift: Gift) : Attachment {
     override val type = "Gift"
 }
@@ -146,7 +177,7 @@ fun main() {
         )
     )
 
-    WallService.printPosts()
+    //WallService.printPosts()
 
     WallService.add(
         Post(
@@ -158,7 +189,7 @@ fun main() {
             fieldTypeDescription = "Текст записи."
         )
     )
-    WallService.printPosts()
+    //WallService.printPosts()
 
     WallService.add(
         Post(
@@ -169,16 +200,20 @@ fun main() {
             fieldName = null,
             fieldTypeDescription = "Фото",
             attachment = arrayOf(
-                PhotoAttachment(Photo(0, 555, "url_1","url_1")),
-                VideoAttachment(Video(1, 9847, "Просто видео",60)),
+                PhotoAttachment(Photo(0, 555, "url_1", "url_1")),
+                VideoAttachment(Video(1, 9847, "Просто видео", 60)),
                 AudioAttachment(Audio(10, 1047, "Аудиозапись", "Happy new year")),
                 FileAttachment(File(207, 6584, "Текстовый документ", 217)),
                 GiftAttachment(Gift(2000, "url_1", "url_2", "url_3"))
-                )
+            )
         )
     )
 
+    WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий"))
+    WallService.createComment(4, Comments(0, 2541, 170124, "Второй комментарий"))
 
     WallService.printPosts()
 }
+
+
 

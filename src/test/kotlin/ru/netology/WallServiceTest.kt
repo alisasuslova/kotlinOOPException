@@ -26,7 +26,6 @@ class WallServiceTest {
                 likes = Likes(10)
             )
         )
-
         assertEquals(1, result.postId)
     }
 
@@ -55,8 +54,6 @@ class WallServiceTest {
                 fieldTypeDescription = "Текст записи."
             )
         )
-
-        //assertEquals(true, result)
         assertTrue(result)
     }
 
@@ -74,8 +71,35 @@ class WallServiceTest {
                 likes = Likes(10)
             )
         )
-        //assertEquals(false, result)
         assertFalse(result)
     }
 
+    @Test
+    fun createCommentTrue() {
+
+        WallService.add(
+            Post(
+                postId = 0,
+                page = 1,
+                listOnTheLeft = "Документация",
+                fieldId = 0,
+                fieldName = "Id",
+                fieldTypeDescription = "Идентификатор записи.",
+                likes = Likes(10)
+            )
+        )
+
+        val testComment = Comments(1, 1051, 160124, "Первый комментарий")
+
+        var result = WallService.createComment(1, testComment)
+
+        assertEquals(testComment, result)
+    }
+
+
+    @Test(expected = PostNotFoundException::class)
+    fun shouldThrow() {
+        // здесь код с вызовом функции, которая должна выкинуть PostNotFoundException
+        val result = WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий"))
+    }
 }
