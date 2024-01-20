@@ -66,24 +66,12 @@ object WallService {
     }
 
     fun createComment(postId: Int, comment: Comments): Comments {
-        
+
         for ((index, post) in posts.withIndex()) {
-            if (post.postId == postId && comments.isEmpty()) {
-                comments += comment
-                comment.id = lastCommentsId
+            if (post.postId == postId) {
+                comments += comment.copy(id = lastCommentsId++)
                 posts[index] = post.copy(comments = post.comments + comments.last())
-                ++lastCommentsId
-                return comment
-            } else {
-                for ((index, post) in posts.withIndex()) {
-                    if (post.postId == postId && comments.isNotEmpty()) {
-                        comments += comment
-                        comment.id = lastCommentsId
-                        posts[index] = post.copy(comments = post.comments + comments.last())
-                        ++lastCommentsId
-                        return comment
-                    }
-                }
+                return comments.last()
             }
         }
         throw PostNotFoundException("Поста с id $postId нет!")
@@ -221,7 +209,7 @@ fun main() {
         )
     )
 
-    print(WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий")))
+    WallService.createComment(4, Comments(0, 1051, 160124, "Первый комментарий"))
     WallService.createComment(4, Comments(0, 2541, 170124, "Второй комментарий"))
 
     WallService.printPosts()

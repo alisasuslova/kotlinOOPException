@@ -77,20 +77,21 @@ class WallServiceTest {
     @Test
     fun createCommentTrue() {
 
-        var posts = emptyArray<Post>()
-        posts += Post(
-            postId = 0,
-            page = 1,
-            listOnTheLeft = "Документация",
-            fieldId = 0,
-            fieldName = "Id",
-            fieldTypeDescription = "Идентификатор записи.",
-            likes = Likes(10)
+        WallService.add(
+            Post(
+                postId = 0,
+                page = 1,
+                listOnTheLeft = "Документация",
+                fieldId = 0,
+                fieldName = "Id",
+                fieldTypeDescription = "Идентификатор записи.",
+                likes = Likes(10)
+            )
         )
 
         val testComment = Comments(1, 1051, 160124, "Первый комментарий")
 
-        var result = WallService.createComment(0, testComment)
+        var result = WallService.createComment(1, testComment)
 
         assertEquals(testComment, result)
     }
