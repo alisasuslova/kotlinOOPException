@@ -65,6 +65,11 @@ object WallService {
         lastPostId = 0
     }
 
+    fun clearComment() {
+        comments = emptyArray()
+        lastCommentsId = 0
+    }
+
     fun createComment(postId: Int, comment: Comments): Comments {
 
         for ((index, post) in posts.withIndex()) {

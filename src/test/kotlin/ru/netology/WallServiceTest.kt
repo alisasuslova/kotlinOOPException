@@ -10,6 +10,7 @@ class WallServiceTest {
     @Before
     fun clearBeforeTest() {
         WallService.clear()
+        WallService.clearComment()
     }
 
     @Test
@@ -89,7 +90,7 @@ class WallServiceTest {
             )
         )
 
-        val testComment = Comments(1, 1051, 160124, "Первый комментарий")
+        val testComment = Comments(0, 1051, 160124, "Первый комментарий")
 
         var result = WallService.createComment(1, testComment)
 
